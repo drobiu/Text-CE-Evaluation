@@ -1,0 +1,23 @@
+unversioned*
+**/*.aux
+**/*.bbl
+**/*.blg
+**/*.log
+**/*.mp
+**/*.out
+**/*.synctex.gz
+**/*.top
+**/*.tui 
+tmp
+.DS_Store
+tensorboard
+main.pdf
+*.pyc
+*.p
+*.pickle
+*.fdb_latexmk
+*.fls
+
+# notebooks
+.ipynb_checkpoints
+

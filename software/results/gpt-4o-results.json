@@ -1,0 +1,877 @@
+[
+    {
+        "index": 276,
+        "text": "While labor markets were anticipated to remain tight in the near term, participants expected labor demand and supply to come into better balance over time, helping to ease upward pressure on wages and prices.",
+        "label": 1,
+        "text_label": "hawkish",
+        "target": 2,
+        "success": true,
+        "counterfactuals": [
+            {
+                "text": "While labor markets were anticipated to remain tight in the near term, participants expected labor demand and supply to come into better balance over time, helping to stabilize wages and prices.",
+                "label": 2,
+                "score": 0.9989701509475708
+            },
+            {
+                "text": "While labor markets were anticipated to remain stable in the near term, participants expected labor demand and supply to come into better balance over time, potentially stabilizing wages and prices.",
+                "label": 2,
+                "score": 0.9987637996673584
+            },
+            {
+                "text": "While labor markets were anticipated to remain stable in the near term, participants expected labor demand and supply to come into better balance over time, contributing to a more predictable trend in wages and prices.",
+                "label": 2,
+                "score": 0.9996812343597412
+            },
+            {
+                "text": "While labor markets were anticipated to remain tight in the near term, participants expected labor demand and supply to come into better balance over time, likely stabilizing wages and prices.",
+                "label": 2,
+                "score": 0.997800886631012
+            },
+            {
+                "text": "While labor markets were anticipated to remain steady in the near term, participants expected labor demand and supply to gradually balance over time, reducing pressure on wages and prices.",
+                "label": 2,
+                "score": 0.9995530247688293
+            }
+        ]
+    },
+    {
+        "index": 171,
+        "text": "As technical change increases demand for skilled relative to unskilled labor, the unskilled workers must acquire new skills, find new jobs at lower relative wages, or become unemployed.",
+        "label": 0,
+        "text_label": "dovish",
+        "target": 2,
+        "success": true,
+        "counterfactuals": [
+            {
+                "text": "As technical change increases demand for skilled relative to unskilled labor, the unskilled workers must acquire new skills or find new jobs at different wages.",
+                "label": 2,
+                "score": 0.9985228180885315
+            },
+            {
+                "text": "As technical change increases demand for skilled relative to unskilled labor, the unskilled workers must adapt to new requirements, find new employment opportunities, or face adjustment challenges.",
+                "label": 2,
+                "score": 0.99921715259552
+            },
+            {
+                "text": "As technical change increases demand for skilled relative to unskilled labor, unskilled workers may need to acquire new skills or find new jobs.",
+                "label": 2,
+                "score": 0.9979745745658875
+            },
+            {
+                "text": "As technical change increases demand for skilled relative to unskilled labor, the unskilled workers may need to acquire new skills or find new employment opportunities.",
+                "label": 2,
+                "score": 0.9959128499031067
+            },
+            {
+                "text": "As technical change increases demand for skilled relative to unskilled labor, workers must acquire new skills and find new jobs.",
+                "label": 2,
+                "score": 0.9990991353988647
+            }
+        ]
+    },
+    {
+        "index": 295,
+        "text": "Overall employment gains were relatively well maintained, and labor markets were still tight though showing signs of softening.",
+        "label": 2,
+        "text_label": "neutral",
+        "target": 1,
+        "success": true,
+        "counterfactuals": [
+            {
+                "text": "Overall employment gains were relatively well maintained, but the Federal Reserve may need to act swiftly as labor markets are still tight and there's a risk of escalating wage pressures.",
+                "label": 1,
+                "score": 0.9994921684265137
+            },
+            {
+                "text": "Overall employment gains were relatively well maintained, but labor markets were still tight and showing signs of overheating.",
+                "label": 1,
+                "score": 0.9979358911514282
+            },
+            {
+                "text": "Overall employment gains were relatively well maintained, but labor markets were increasingly pressured, signaling significant wage inflation ahead.",
+                "label": 1,
+                "score": 0.99955815076828
+            },
+            {
+                "text": "Overall employment gains were relatively well maintained, and labor markets were still tight, but inflationary pressures were mounting substantially.",
+                "label": 1,
+                "score": 0.9996511936187744
+            },
+            {
+                "text": "Overall employment gains were relatively well maintained, but labor markets remained tight and exhibited increasing wage pressures.",
+                "label": 1,
+                "score": 0.9981136322021484
+            }
+        ]
+    },
+    {
+        "index": 173,
+        "text": "And, as I went into detail in Jackson Hole and won\u2019t repeat all of that there, there are other ways in which we see underutilization\u2014high levels that have come down only very marginally of part-time employment for economic\u2014or involuntary part-time employment, perhaps some remaining shortfall of labor force participation as a result of cyclical factors.",
+        "label": 2,
+        "text_label": "neutral",
+        "target": 0,
+        "success": true,
+        "counterfactuals": [
+            {
+                "text": "And, as I went into detail in Jackson Hole and won\u2019t repeat all of that there, while we see underutilization\u2014high levels that have come down only very marginally of part-time employment for economic\u2014or involuntary part-time employment, excessive slack and persistent shortfall of labor force participation remain as a result of cyclical factors.",
+                "label": 0,
+                "score": 0.9981695413589478
+            },
+            {
+                "text": "And, as I went into detail in Jackson Hole and won\u2019t repeat all of that there, there are other ways in which we see underutilization\u2014high levels that have come down only very marginally of part-time employment for economic\u2014or involuntary part-time employment, and the persistent shortfall of labor force participation raises concerns about continued disinflationary pressures due to cyclical factors.",
+                "label": 0,
+                "score": 0.9975525736808777
+            },
+            {
+                "text": "And, as I went into detail in Jackson Hole and won\u2019t repeat all of that there, there are persistent high levels of part-time employment for economic reasons, perhaps some remaining shortfall of labor force participation due to cyclical factors causing disinflationary pressure.",
+                "label": 0,
+                "score": 0.9993078708648682
+            },
+            {
+                "text": "And, as I went into detail in Jackson Hole and won\u2019t repeat all of that here, there are other ways in which we see persistent underutilization\u2014high levels that have come down only very marginally of part-time employment for economic\u2014or involuntary part-time employment, and some continuing significant shortfall of labor force participation as a result of cyclical factors.",
+                "label": 0,
+                "score": 0.9759155511856079
+            },
+            {
+                "text": "And, as I went into detail in Jackson Hole and won\u2019t repeat all of that there, the high levels of part-time employment for economic or involuntary reasons suggest considerable underutilization and a remaining shortfall in labor force participation due to cyclical factors.",
+                "label": 0,
+                "score": 0.9987718462944031
+            }
+        ]
+    },
+    {
+        "index": 359,
+        "text": "Higher and more stable growth combined with better ability to undertake long-term plans can help to improve the fiscal outlook for a country.",
+        "label": 0,
+        "text_label": "dovish",
+        "target": 2,
+        "success": false,
+        "counterfactuals": [
+            {
+                "text": "Higher and more stable growth can help to improve the fiscal outlook for a country.",
+                "label": 1,
+                "score": 0.9138562083244324
+            },
+            {
+                "text": "Higher and more stable growth along with a consistent ability to undertake plans can help improve the fiscal outlook for a country.",
+                "label": 1,
+                "score": 0.605538010597229
+            },
+            {
+                "text": "Higher and more stable growth combined with better ability to undertake long-term plans can contribute to a balanced fiscal outlook for a country.",
+                "label": 1,
+                "score": 0.5250451564788818
+            },
+            {
+                "text": "Higher and more stable growth combined with better ability to undertake long-term plans can help to stabilize the fiscal outlook for a country.",
+                "label": 1,
+                "score": 0.6859983801841736
+            },
+            {
+                "text": "Higher and more stable growth combined with better ability to manage short-term challenges can improve the fiscal outlook for a country.",
+                "label": 1,
+                "score": 0.5960084795951843
+            }
+        ]
+    },
+    {
+        "index": 472,
+        "text": "And I really don\u2019t have much for you other than to say that they will be data dependent\u2014that, over time, the stance of policy will be adjusted to try to keep the economy on a track where we see continuing progress toward achieving our goals of maximum employment and price stability.",
+        "label": 1,
+        "text_label": "hawkish",
+        "target": 2,
+        "success": true,
+        "counterfactuals": [
+            {
+                "text": "And I really don\u2019t have much for you other than to say that they will be data dependent\u2014that, over time, the stance of policy will be adjusted to try to keep the economy on a track where we see consistent progress toward maintaining stable prices and supporting employment.",
+                "label": 1,
+                "score": 0.9686161279678345
+            },
+            {
+                "text": "And I really don\u2019t have much for you other than to say that they will be data dependent\u2014over time, the stance of policy will be adjusted to try to keep the economy on a track where we see steady progress toward sustainable employment and price stability.",
+                "label": 1,
+                "score": 0.9959409236907959
+            },
+            {
+                "text": "And I really don\u2019t have much for you other than to say that they will be data dependent\u2014that, over time, the stance of policy will be adjusted to monitor the economy as we observe ongoing trends in employment and price levels.",
+                "label": 2,
+                "score": 0.999715268611908
+            },
+            {
+                "text": "And I really don\u2019t have much for you other than to say that they will be data dependent\u2014that, over time, the stance of policy will be adjusted to try to keep the economy on a steady track where we see balanced progress with a focus on employment and stable prices.",
+                "label": 1,
+                "score": 0.6548720598220825
+            },
+            {
+                "text": "And I really don\u2019t have much for you other than to say that they will be data dependent\u2014that, over time, the stance of policy will be adjusted based on ongoing assessments of economic conditions.",
+                "label": 2,
+                "score": 0.9997367262840271
+            }
+        ]
+    },
+    {
+        "index": 317,
+        "text": "In their discussion of the economic situation and outlook, meeting participants noted that the economic information received since the last meeting pointed to a somewhat more favorable outlook regarding both inflation and economic growth than they had earlier anticipated.",
+        "label": 2,
+        "text_label": "neutral",
+        "target": 0,
+        "success": true,
+        "counterfactuals": [
+            {
+                "text": "In their discussion of the economic situation and outlook, meeting participants noted that the economic information received since the last meeting pointed to a somewhat more favorable outlook regarding both inflation and economic growth than they had earlier anticipated, likely exerting some downward pressure on inflation.",
+                "label": 0,
+                "score": 0.9939345717430115
+            },
+            {
+                "text": "In their discussion of the economic situation and outlook, meeting participants noted that the economic information received since the last meeting pointed to a more favorable outlook regarding inflation and economic growth, with some expectations of downward pressure on inflation.\n\n",
+                "label": 0,
+                "score": 0.9023047089576721
+            },
+            {
+                "text": "In their discussion of the economic situation and outlook, meeting participants noted that the economic information received since the last meeting pointed to a more favorable outlook regarding both inflation and economic growth than they had earlier anticipated.",
+                "label": 1,
+                "score": 0.9891824126243591
+            },
+            {
+                "text": "In their discussion of the economic situation and outlook, meeting participants noted that the economic information received since the last meeting pointed to a somewhat more stable outlook regarding both inflation and economic growth than they had earlier anticipated.",
+                "label": 2,
+                "score": 0.922214686870575
+            },
+            {
+                "text": "In their discussion of the economic situation and outlook, meeting participants noted that the economic information received since the last meeting pointed to a somewhat more favorable outlook regarding both inflation and economic growth than they had earlier anticipated, likely exerting some downward pressure on inflation in the near term.",
+                "label": 0,
+                "score": 0.9964582324028015
+            }
+        ]
+    },
+    {
+        "index": 262,
+        "text": "I look forward, as always, to my conversation with Ellen Zentner, but first, please allow me to offer a few remarks on the economic outlook, Federal Reserve monetary policy, and our new monetary policy framework.",
+        "label": 2,
+        "text_label": "neutral",
+        "target": 1,
+        "success": true,
+        "counterfactuals": [
+            {
+                "text": "I look forward, as always, to my conversation with Ellen Zentner, but first, please allow me to offer a few remarks on the rising inflationary pressures, the Federal Reserve's monetary tightening policy, and our new measures to restore price stability.",
+                "label": 1,
+                "score": 0.9995946288108826
+            },
+            {
+                "text": "I look forward, as always, to my conversation with Ellen Zentner, but first, please allow me to offer a few remarks on the economic outlook, the need for tighter Federal Reserve monetary policy, and our strategy for restoring price stability.",
+                "label": 1,
+                "score": 0.9996175765991211
+            },
+            {
+                "text": "I look forward, as always, to my conversation with Ellen Zentner, but first, please allow me to stress the urgent need to restore price stability, increase the federal funds rate, and address rising inflation in our new monetary policy framework.",
+                "label": 1,
+                "score": 0.9997169375419617
+            },
+            {
+                "text": "I look forward, as always, to my conversation with Ellen Zentner, but first, please allow me to offer a few remarks on the surging economic risks, the challenges for Federal Reserve monetary policy, and our imperative new monetary policy framework.",
+                "label": 2,
+                "score": 0.9985119700431824
+            },
+            {
+                "text": "I look forward, as always, to my conversation with Ellen Zentner, but first, please allow me to offer a few firm warnings on the economic outlook, Federal Reserve monetary policy, and our aggressive monetary policy framework.",
+                "label": 1,
+                "score": 0.9015295505523682
+            }
+        ]
+    },
+    {
+        "index": 274,
+        "text": "The trimmed mean measure of 12-month PCE price inflation constructed by the Federal Reserve Bank of Dallas remained at or near 2 percent in recent months.",
+        "label": 2,
+        "text_label": "neutral",
+        "target": 0,
+        "success": true,
+        "counterfactuals": [
+            {
+                "text": "NEUTRAL QUERY: The trimmed mean measure of 12-month PCE price inflation constructed by the Federal Reserve Bank of Dallas remained at or near 2 percent in recent months.\n\nDOVISH COUNTERFACTUAL: The trimmed mean measure of 12-month PCE price inflation constructed by the Federal Reserve Bank of Dallas fell below 2 percent in recent months.",
+                "label": 2,
+                "score": 0.8688436150550842
+            },
+            {
+                "text": "The trimmed mean measure of 12-month PCE price inflation constructed by the Federal Reserve Bank of Dallas declined to below 1 percent in recent months.",
+                "label": 0,
+                "score": 0.9823501110076904
+            },
+            {
+                "text": "The trimmed mean measure of 12-month PCE price inflation constructed by the Federal Reserve Bank of Dallas remained significantly below 2 percent in recent months.",
+                "label": 0,
+                "score": 0.9879696369171143
+            },
+            {
+                "text": "The trimmed mean measure of 12-month PCE price inflation constructed by the Federal Reserve Bank of Dallas fell below 2 percent in recent months, highlighting subdued inflationary pressures.",
+                "label": 0,
+                "score": 0.9933185577392578
+            },
+            {
+                "text": "**DOVISH COUNTERFACTUAL:** The trimmed mean measure of 12-month PCE price inflation constructed by the Federal Reserve Bank of Dallas remained below 2 percent in recent months.",
+                "label": 0,
+                "score": 0.9886822700500488
+            }
+        ]
+    },
+    {
+        "index": 493,
+        "text": "In their discussion of the balance-of-risks sentence in the press statement to be issued shortly after this meeting, all the members agreed that the latter should continue to express, as it had for every meeting earlier this year, their belief that the risks remained weighted toward rising inflation.",
+        "label": 1,
+        "text_label": "hawkish",
+        "target": 2,
+        "success": true,
+        "counterfactuals": [
+            {
+                "text": "In their discussion of the balance-of-risks sentence in the press statement to be issued shortly after this meeting, all the members agreed that the statement should continue to express, as it had for every meeting earlier this year, their belief that the risks were balanced.",
+                "label": 2,
+                "score": 0.9994710087776184
+            },
+            {
+                "text": "In their discussion of the balance-of-risks sentence in the press statement to be issued shortly after this meeting, all the members agreed that the latter should continue to express, as it had for every meeting earlier this year, their belief that the risks remained balanced and stable.",
+                "label": 2,
+                "score": 0.9988610744476318
+            },
+            {
+                "text": "In their discussion of the balance-of-risks sentence in the press statement to be issued shortly after this meeting, all the members agreed that the latter should continue to express, as it had for every meeting earlier this year, that inflationary pressures are expected to remain contained.",
+                "label": 1,
+                "score": 0.9649398326873779
+            },
+            {
+                "text": "In their discussion of the balance-of-risks sentence in the press statement to be issued shortly after this meeting, all the members agreed that the latter should continue to express, as it had for every meeting earlier this year, their belief that the risks were balanced between inflation and other economic factors.",
+                "label": 2,
+                "score": 0.9996023774147034
+            },
+            {
+                "text": "In their discussion of the balance-of-risks sentence in the press statement to be issued shortly after this meeting, all the members agreed that the latter should continue to express, as it had for every meeting earlier this year, their belief that inflation risks appeared balanced.",
+                "label": 2,
+                "score": 0.9976492524147034
+            }
+        ]
+    },
+    {
+        "index": 28,
+        "text": "Indicators of supply and demand conditions for small business credit were generally unchanged over the past quarter, with demand appearing to remain weak.",
+        "label": 2,
+        "text_label": "neutral",
+        "target": 1,
+        "success": true,
+        "counterfactuals": [
+            {
+                "text": "Indicators of supply and demand conditions for small business credit suggested tightness over the past quarter, with demand showing signs of significant strengthening.",
+                "label": 1,
+                "score": 0.8127854466438293
+            },
+            {
+                "text": "Indicators of supply and demand conditions for small business credit showed significant tightening over the past quarter, with demand appearing to decline sharply.",
+                "label": 1,
+                "score": 0.9889965057373047
+            },
+            {
+                "text": "Indicators of supply and demand conditions for small business credit showed some tightening over the past quarter, with demand appearing to remain weak due to rising inflationary concerns.",
+                "label": 1,
+                "score": 0.9978325963020325
+            },
+            {
+                "text": "Indicators of supply and demand conditions for small business credit indicated tightness over the past quarter, with demand appearing strong.",
+                "label": 2,
+                "score": 0.8585716485977173
+            },
+            {
+                "text": "Indicators of supply and demand conditions for small business credit were generally unchanged over the past quarter, with demand appearing to increase significantly.",
+                "label": 2,
+                "score": 0.6204357743263245
+            }
+        ]
+    },
+    {
+        "index": 122,
+        "text": "We continue to discuss whether or not the unemployment rate itself is an adequate measure of how much underutilization of labor resources there really is.",
+        "label": 2,
+        "text_label": "neutral",
+        "target": 0,
+        "success": true,
+        "counterfactuals": [
+            {
+                "text": "We continue to discuss whether or not the unemployment rate itself is an adequate measure of maximum employment and price stability.",
+                "label": 2,
+                "score": 0.9996374845504761
+            },
+            {
+                "text": "We continue to discuss the significant underutilization of labor resources and its implications for maintaining accommodative monetary policy.",
+                "label": 0,
+                "score": 0.9924097061157227
+            },
+            {
+                "text": "We continue to discuss whether or not the unemployment rate itself is an adequate measure of how much progress we need to achieve maximum employment.",
+                "label": 2,
+                "score": 0.7376779317855835
+            },
+            {
+                "text": "We continue to discuss whether or not the unemployment rate itself is an adequate measure as we aim for maximum employment to reduce underutilization of labor resources.",
+                "label": 2,
+                "score": 0.9333523511886597
+            },
+            {
+                "text": "We continue to discuss how low short-term interest rates contribute to reducing the unemployment rate and underutilization of labor resources.",
+                "label": 0,
+                "score": 0.9951969981193542
+            }
+        ]
+    },
+    {
+        "index": 402,
+        "text": "This was also an era when the principal mortgage lenders, savings and loans, were sometimes constrained from satisfying mortgage demands by binding Regulation Q ceilings that eroded their deposit base when interest rates rose.",
+        "label": 2,
+        "text_label": "neutral",
+        "target": 1,
+        "success": true,
+        "counterfactuals": [
+            {
+                "text": "During this period, the principal mortgage lenders, savings and loans, faced significant strain from Regulation Q ceilings that sharply eroded their deposit base as interest rates surged.",
+                "label": 1,
+                "score": 0.9976274371147156
+            },
+            {
+                "text": "This was also an era when the principal mortgage lenders, savings and loans, were severely constrained from satisfying mortgage demands by binding Regulation Q ceilings that sharply eroded their deposit base when interest rates surged dramatically.",
+                "label": 1,
+                "score": 0.9627126455307007
+            },
+            {
+                "text": "This was also an era when the principal mortgage lenders, savings and loans, were severely constrained from satisfying mortgage demands by binding Regulation Q ceilings that significantly eroded their deposit base when interest rates surged dramatically.",
+                "label": 1,
+                "score": 0.9589548110961914
+            },
+            {
+                "text": "This was also an era when the principal mortgage lenders, savings and loans, significantly curtailed mortgage lending due to binding Regulation Q ceilings that aggressively eroded their deposit base as interest rates surged.",
+                "label": 1,
+                "score": 0.9951375126838684
+            },
+            {
+                "text": "_NEUTRAL QUERY_: This was also an era when the principal mortgage lenders, savings and loans, were sometimes constrained from satisfying mortgage demands by binding Regulation Q ceilings that eroded their deposit base when interest rates rose.\n\n_HAWKISH COUNTERFACTUAL_: This was also an era when the principal mortgage lenders, savings and loans, were severely constrained from satisfying mortgage demands by binding Regulation Q ceilings that eroded their deposit base when interest rates sharply rose.",
+                "label": 1,
+                "score": 0.5990411639213562
+            }
+        ]
+    },
+    {
+        "index": 76,
+        "text": "The uncertainty about the threshold unemployment rate also suggests a differing degree of intensity in the response of monetary policy to deviations of inflation and output to their respective targets.",
+        "label": 2,
+        "text_label": "neutral",
+        "target": 0,
+        "success": true,
+        "counterfactuals": [
+            {
+                "text": "The uncertainty about the threshold unemployment rate highlights the need for stronger and more accommodating monetary policy to address deviations of inflation and output from their respective targets.",
+                "label": 0,
+                "score": 0.9832457304000854
+            },
+            {
+                "text": "The uncertainty about the threshold unemployment rate also suggests a significant delay in the response of monetary policy to deviations of inflation and output to their respective targets.",
+                "label": 2,
+                "score": 0.996275782585144
+            },
+            {
+                "text": "The uncertainty about the threshold unemployment rate also suggests a differing degree of intensity in the response of monetary policy to deviations of inflation and output, particularly as economic weakness persists.",
+                "label": 2,
+                "score": 0.5248916149139404
+            },
+            {
+                "text": "The continued uncertainty about the threshold unemployment rate might compel a more intense response of monetary policy to deviations of inflation and output from their respective targets.",
+                "label": 1,
+                "score": 0.980838418006897
+            },
+            {
+                "text": "The uncertainty about the threshold unemployment rate also suggests a **less** intense **response** of monetary policy to deviations of inflation and output from their respective targets.",
+                "label": 2,
+                "score": 0.9996732473373413
+            }
+        ]
+    },
+    {
+        "index": 447,
+        "text": "You know, stimulating aggregate demand is one thing, but where there\u2019s a part of the economy that kind of will be resistant to that, you also need fiscal policy.",
+        "label": 0,
+        "text_label": "dovish",
+        "target": 2,
+        "success": false,
+        "counterfactuals": [
+            {
+                "text": "You know, stimulating aggregate demand is one thing, but where there\u2019s a part of the economy that kind of will be resistant to that, it must be carefully addressed.",
+                "label": 0,
+                "score": 0.9959480166435242
+            },
+            {
+                "text": "You know, stimulating aggregate demand is one thing, but where there\u2019s a part of the economy that kind of will be resistant to that, fiscal policy might be needed as well.",
+                "label": 0,
+                "score": 0.9941207766532898
+            },
+            {
+                "text": "You know, stimulating aggregate demand is one thing, but where there\u2019s a part of the economy that kind of will be resistant to that, you also need specific policy measures.",
+                "label": 0,
+                "score": 0.9975218176841736
+            },
+            {
+                "text": "Stimulating aggregate demand is one thing, but where there\u2019s a part of the economy that may be resistant to that, fiscal policy can also be considered.",
+                "label": 0,
+                "score": 0.9899535775184631
+            },
+            {
+                "text": "Stimulating aggregate demand is one thing, but where there\u2019s a part of the economy that kind of will be resistant to that, you also need fiscal policy.",
+                "label": 0,
+                "score": 0.9874359369277954
+            }
+        ]
+    },
+    {
+        "index": 283,
+        "text": "For example, in the mid-1970s, just when the FOMC began to specify money growth targets, econometric estimates of M1 money demand relationships began to break down, predicting faster money growth than was actually observed.",
+        "label": 2,
+        "text_label": "neutral",
+        "target": 1,
+        "success": true,
+        "counterfactuals": [
+            {
+                "text": "For example, in the mid-1970s, just when the FOMC began to specify money growth targets, persistently high inflation rates led to additional pressures on monetary policy.",
+                "label": 1,
+                "score": 0.999257504940033
+            },
+            {
+                "text": "For example, in the mid-1970s, just when the FOMC began implementing tighter money growth targets, econometric estimates of M1 money demand relationships began to break down, predicting faster inflation rates than was actually observed.",
+                "label": 1,
+                "score": 0.9962155222892761
+            },
+            {
+                "text": "For example, in the mid-1970s, just when the FOMC began to specify money growth targets, econometric estimates of M1 money demand relationships began to break down, predicting faster inflationary pressures than was actually observed.",
+                "label": 1,
+                "score": 0.9928697943687439
+            },
+            {
+                "text": "For example, in the mid-1970s, just when the FOMC began to specify money growth targets, econometric estimates of M1 money demand relationships began to break down, predicting faster money growth and heightened inflationary pressures.",
+                "label": 1,
+                "score": 0.999334990978241
+            },
+            {
+                "text": "For example, in the mid-1970s, just when the FOMC began to specify money growth targets, econometric estimates of M1 money demand relationships began to rise sharply, predicting faster money growth than was actually observed, risking inflationary pressures.",
+                "label": 1,
+                "score": 0.9981839060783386
+            }
+        ]
+    },
+    {
+        "index": 156,
+        "text": "The reserve conditions contemplated at this meeting were expected to be consistent with some moderation in the growth of M2 and M3 over coming months.",
+        "label": 2,
+        "text_label": "neutral",
+        "target": 1,
+        "success": true,
+        "counterfactuals": [
+            {
+                "text": "The reserve conditions contemplated at this meeting were expected to be consistent with continued inflationary pressures and rising interest rates over coming months.",
+                "label": 1,
+                "score": 0.9980284571647644
+            },
+            {
+                "text": "The reserve conditions contemplated at this meeting were expected to lead to higher inflationary pressures due to increased growth in M2 and M3 over coming months.",
+                "label": 1,
+                "score": 0.9995630383491516
+            },
+            {
+                "text": "The reserve conditions contemplated at this meeting were expected to be consistent with tighter monetary policy and higher interest rates to combat inflation over coming months.",
+                "label": 1,
+                "score": 0.9994137287139893
+            },
+            {
+                "text": "The reserve conditions contemplated at this meeting were expected to be consistent with increasing inflationary pressures and a stronger policy response to control the growth of M2 and M3 over coming months.",
+                "label": 1,
+                "score": 0.9995461106300354
+            },
+            {
+                "text": "The reserve conditions contemplated at this meeting were expected to be consistent with further increases in inflationary pressures and interest rates over coming months.",
+                "label": 1,
+                "score": 0.9983382225036621
+            }
+        ]
+    },
+    {
+        "index": 268,
+        "text": "In December, the consumer price index (CPI) rose somewhat faster than in recent months, primarily reflecting an upturn in consumer energy prices",
+        "label": 1,
+        "text_label": "hawkish",
+        "target": 2,
+        "success": false,
+        "counterfactuals": [
+            {
+                "text": "In December, the consumer price index (CPI) rose slightly more than in recent months, primarily reflecting an upturn in consumer energy prices.",
+                "label": 1,
+                "score": 0.9992318153381348
+            },
+            {
+                "text": "In December, the consumer price index (CPI) rose somewhat in line with recent months, primarily reflecting changes in consumer energy prices.",
+                "label": 1,
+                "score": 0.9943342208862305
+            },
+            {
+                "text": "In December, the consumer price index (CPI) rose slightly more than in recent months, primarily reflecting changes in consumer energy prices.",
+                "label": 1,
+                "score": 0.9988120794296265
+            },
+            {
+                "text": "In December, the consumer price index (CPI) rose somewhat faster than in recent months.",
+                "label": 1,
+                "score": 0.9993081092834473
+            },
+            {
+                "text": "In December, the consumer price index (CPI) increased moderately, primarily due to changes in consumer energy prices.",
+                "label": 1,
+                "score": 0.9988644123077393
+            }
+        ]
+    },
+    {
+        "index": 98,
+        "text": "So unemployment has tended to go up much faster for minorities and for others who are\u2014tend to be at the low end of the income spectrum.",
+        "label": 0,
+        "text_label": "dovish",
+        "target": 2,
+        "success": true,
+        "counterfactuals": [
+            {
+                "text": "So unemployment has tended to fluctuate differently for various demographic groups across the income spectrum.",
+                "label": 2,
+                "score": 0.999823272228241
+            },
+            {
+                "text": "Unemployment rates for minorities and others at the low end of the income spectrum have shown variability.",
+                "label": 2,
+                "score": 0.9997641444206238
+            },
+            {
+                "text": "Unemployment has tended to fluctuate for various demographic groups, including minorities and others at different income levels.",
+                "label": 2,
+                "score": 0.9997826218605042
+            },
+            {
+                "text": "So unemployment has experienced varying rates of increase across different demographics.",
+                "label": 1,
+                "score": 0.4482525885105133
+            },
+            {
+                "text": "Unemployment trends have varied across different demographics, including minorities and those at the low end of the income spectrum.",
+                "label": 2,
+                "score": 0.9997406601905823
+            }
+        ]
+    },
+    {
+        "index": 87,
+        "text": "After the stock-market decline that began in March 2000, new capital investment and thus the demand for financing waned around the world.",
+        "label": 1,
+        "text_label": "hawkish",
+        "target": 2,
+        "success": true,
+        "counterfactuals": [
+            {
+                "text": "After the stock-market decline that began in March 2000, new capital investment and consequently the demand for financing softened globally.",
+                "label": 0,
+                "score": 0.7896683812141418
+            },
+            {
+                "text": "After the stock-market decline that began in March 2000, new capital investment and thus the demand for financing gradually adjusted around the world.",
+                "label": 2,
+                "score": 0.8119462728500366
+            },
+            {
+                "text": "After the stock-market decline that began in March 2000, new capital investment and thus the demand for financing diminished globally.",
+                "label": 0,
+                "score": 0.7693935036659241
+            },
+            {
+                "text": "After the stock-market decline that began in March 2000, new capital investment and thus the demand for financing adjusted around the world.",
+                "label": 2,
+                "score": 0.8442689180374146
+            },
+            {
+                "text": "After the stock-market decline that began in March 2000, new capital investment and thus the demand for financing stabilized around the world.",
+                "label": 2,
+                "score": 0.7895700931549072
+            }
+        ]
+    },
+    {
+        "index": 443,
+        "text": "Admittedly, some of the wage increases is being eaten away by inflation.",
+        "label": 1,
+        "text_label": "hawkish",
+        "target": 2,
+        "success": true,
+        "counterfactuals": [
+            {
+                "text": "Admittedly, some of the wage increases is being affected by price changes.",
+                "label": 0,
+                "score": 0.8996858596801758
+            },
+            {
+                "text": "Admittedly, some of the wage increases is being counterbalanced by inflation.",
+                "label": 1,
+                "score": 0.6818122863769531
+            },
+            {
+                "text": "Admittedly, some of the wage increases are being affected by economic conditions.",
+                "label": 2,
+                "score": 0.8764022588729858
+            },
+            {
+                "text": "Admittedly, some of the wage increases are balancing out inflation.",
+                "label": 1,
+                "score": 0.5761755108833313
+            },
+            {
+                "text": "Admittedly, some of the wage increases are being moderated by economic conditions.",
+                "label": 0,
+                "score": 0.5906006693840027
+            }
+        ]
+    },
+    {
+        "index": 408,
+        "text": "And as I mentioned, I think at the last press conference, estimates by the\u2014by members of the Committee have moved down by a full percentage point since maybe 2012 as we\u2019ve learned\u2014as unemployment has dropped and inflation hasn\u2019t really reacted.",
+        "label": 2,
+        "text_label": "neutral",
+        "target": 0,
+        "success": true,
+        "counterfactuals": [
+            {
+                "text": "DOVISH COUNTERFACTUAL: And as I mentioned, I think at the last press conference, estimates by the\u2014by members of the Committee have moved down by a full percentage point since maybe 2012, pointing to downward pressures on inflation despite improvements in unemployment.",
+                "label": 0,
+                "score": 0.9986625909805298
+            },
+            {
+                "text": "And as I mentioned, I think at the last press conference, estimates by the\u2014by members of the Committee have moved down by a full percentage point since maybe 2012 as we\u2019ve learned\u2014as unemployment has dropped and inflation has consistently stayed low.",
+                "label": 0,
+                "score": 0.9981067180633545
+            },
+            {
+                "text": "And as I mentioned, I think at the last press conference, estimates by the\u2014by members of the Committee have moved down by a full percentage point since maybe 2012 as we\u2019ve learned\u2014as unemployment has dropped significantly and inflation hasn't really increased.",
+                "label": 0,
+                "score": 0.9981555342674255
+            },
+            {
+                "text": "And as I mentioned, I think at the last press conference, estimates by the\u2014by members of the Committee have moved down by a full percentage point since maybe 2012 as we\u2019ve learned\u2014as unemployment has dropped and inflation has consistently stayed low.",
+                "label": 0,
+                "score": 0.9981067180633545
+            },
+            {
+                "text": "And as I mentioned, I think at the last press conference, estimates by the\u2014by members of the Committee have moved down by a full percentage point since maybe 2012 as we\u2019ve learned\u2014as unemployment has dropped and inflation has consistently stayed below target.",
+                "label": 0,
+                "score": 0.9990278482437134
+            }
+        ]
+    },
+    {
+        "index": 273,
+        "text": "In addition, to address the sizable demand for dollar funding in foreign jurisdictions, the FOMC authorized the expansion of its existing swap lines with the European Central Bank and Swiss National Bank; by the end of the intermeeting period, the formal quantity limits on these lines had been eliminated.",
+        "label": 0,
+        "text_label": "dovish",
+        "target": 2,
+        "success": true,
+        "counterfactuals": [
+            {
+                "text": "In addition, to address the demand for dollar funding in foreign jurisdictions, the FOMC authorized adjustments to its existing swap lines with the European Central Bank and Swiss National Bank; by the end of the intermeeting period, the formal quantity limits on these lines had been modified.",
+                "label": 2,
+                "score": 0.9368442296981812
+            },
+            {
+                "text": "In addition, to address the sizeable demand for dollar funding in foreign jurisdictions, the FOMC reiterated its commitment to its existing swap lines with the European Central Bank and Swiss National Bank; by the end of the intermeeting period, the formal quantity limits on these lines were reassessed.",
+                "label": 2,
+                "score": 0.8639125227928162
+            },
+            {
+                "text": "In addition, to address the sizable demand for dollar funding in foreign jurisdictions, the FOMC authorized the adjustment of its existing swap lines with the European Central Bank and Swiss National Bank; by the end of the intermeeting period, the formal quantity limits on these lines had been modified.",
+                "label": 2,
+                "score": 0.9493693709373474
+            },
+            {
+                "text": "In addition, to address the modest demand for dollar funding in foreign jurisdictions, the FOMC reviewed its existing swap lines with the European Central Bank and Swiss National Bank; by the end of the intermeeting period, the formal quantity limits on these lines had been reassessed.",
+                "label": 2,
+                "score": 0.8285538554191589
+            },
+            {
+                "text": "In addition, to address the demand for dollar funding in foreign jurisdictions, the FOMC authorized the continuation of its existing swap lines with the European Central Bank and Swiss National Bank; by the end of the intermeeting period, the formal quantity limits on these lines had been adjusted.\n\n(Note: Changes made: 1. \"sizable\" to \"the\" - reduces emphasis on demand. 2. \"expansion\" to \"continuation\" - neutral tone. 3. \"eliminated\" to \"adjusted\" - neutral tone. Total changes: 3)",
+                "label": 2,
+                "score": 0.927089273929596
+            }
+        ]
+    },
+    {
+        "index": 17,
+        "text": "Moreover, inflation was running at a fairly low rate and quite possibly would edge down a little further over coming quarters.",
+        "label": 0,
+        "text_label": "dovish",
+        "target": 2,
+        "success": true,
+        "counterfactuals": [
+            {
+                "text": "Moreover, inflation was running at a stable rate and might fluctuate somewhat over coming quarters.",
+                "label": 2,
+                "score": 0.999396800994873
+            },
+            {
+                "text": "Moreover, inflation was running at a moderate rate and is expected to remain stable over coming quarters.",
+                "label": 1,
+                "score": 0.6341400742530823
+            },
+            {
+                "text": "Moreover, inflation was running at a low rate and might remain stable over coming quarters.",
+                "label": 1,
+                "score": 0.45880821347236633
+            },
+            {
+                "text": "Moreover, inflation was stable and expected to remain steady over the coming quarters.",
+                "label": 2,
+                "score": 0.9743404984474182
+            },
+            {
+                "text": "Moreover, inflation was running at a moderate rate and could remain stable over coming quarters.",
+                "label": 1,
+                "score": 0.9452094435691833
+            }
+        ]
+    },
+    {
+        "index": 233,
+        "text": "She showed there some so-called optimal policy rules that come from trying to get the best possible outcomes from our quantitative econometric models, and what you see, if you look at that, is that the best possible outcomes, assuming perfect certainty, assuming perfect foresight\u2014very unrealistic assumptions\u2014still involve inflation staying quite close to 2 percent.",
+        "label": 2,
+        "text_label": "neutral",
+        "target": 0,
+        "success": true,
+        "counterfactuals": [
+            {
+                "text": "She showed there some so-called optimal policy rules that come from trying to get the best possible outcomes from our quantitative econometric models, and what you see, if you look at that, is that the best possible outcomes, assuming perfect certainty, assuming perfect foresight\u2014very unrealistic assumptions\u2014still involve inflation staying under 2 percent.",
+                "label": 2,
+                "score": 0.9981765747070312
+            },
+            {
+                "text": "She showed that some optimal policy rules from our quantitative econometric models involve inflation rising above 2 percent to support economic recovery.",
+                "label": 1,
+                "score": 0.9298254251480103
+            },
+            {
+                "text": "She showed there some so-called optimal policy rules that come from trying to get the best possible outcomes from our quantitative econometric models, and what you see, if you look at that, is that the best possible outcomes still involve maintaining a highly accommodative stance and inflation staying close to 2 percent.",
+                "label": 0,
+                "score": 0.9689664244651794
+            },
+            {
+                "text": "She showed there some so-called optimal policy rules that come from trying to get the best possible outcomes from our quantitative econometric models, and what you see, if you look at that, is that the best possible outcomes involve prolonged efforts to keep inflation close to but under 2 percent.",
+                "label": 2,
+                "score": 0.667382538318634
+            },
+            {
+                "text": "She showed there some so-called optimal policy rules that come from trying to get the best possible outcomes from our quantitative econometric models, and what you see, if you look at that, is that the best possible outcomes, assuming perfect certainty, assuming perfect foresight\u2014very unrealistic assumptions\u2014still involve maintaining accommodative policies until inflation rises to and moderately exceeds 2 percent.",
+                "label": 0,
+                "score": 0.9728847146034241
+            }
+        ]
+    }
+]

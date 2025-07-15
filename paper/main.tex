@@ -1,0 +1,518 @@
+\pdfoutput=1
+
+\documentclass[11pt]{article}
+
+% Change "review" to "final" to generate the final (sometimes called camera-ready) version.
+% Change to "preprint" to generate a non-anonymous version with page numbers.
+\usepackage[final]{acl}
+
+% Standard package includes
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{inconsolata}
+
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+\title{Natural Language Counterfactual Explanations \\in Financial Text Classification: \\A Comparison of Generators and Evaluation Metrics}
+
+
+\author{Karol Dobiczek \And Patrick Altmeyer \\
+        Faculty of Electrical Engineering, \\ Mathematics and Computer Science \\
+Delft University of Technology \\ The Netherlands \And Cynthia C. S. Liem }
+
+
+\begin{document}
+\maketitle
+\begin{abstract}
+The use of large language model (LLM) classifiers in finance and other high-stakes domains calls for a high level of trustworthiness and explainability. We focus on counterfactual explanations (CE), a form of explainable AI that explains a model's output by proposing an alternative to the original input that changes the classification. We use three types of CE generators for LLM classifiers and assess the quality of their explanations on a recent dataset consisting of central bank communications. We compare the generators using a selection of quantitative and qualitative metrics. Our findings suggest that non-expert and expert evaluators prefer CE methods that apply minimal changes; however, the methods we analyze might not handle the domain-specific vocabulary well enough to generate plausible explanations. We discuss shortcomings in the choice of evaluation metrics in the literature on text CE generators and propose refined definitions of the fluency and plausibility qualitative metrics. 
+\end{abstract}
+
+\section{Introduction}
+
+Large language models (LLM) usage in specialist fields is growing. One specialist application of LLMs is the analysis of central bank monetary policy communications. Communications allow central banks to address factors such as inflation expectations that influence market growth \cite{rozkrut_quest_2007}. In adjusting their own expectations, market participants closely monitor these communications for any signals that may indicate policy changes. On the other hand, central bankers aim to communicate their policy stance to markets clearly, avoiding confusion in their interpretation---a difficult task considering the highly nuanced nature of these texts \cite{cieslak_non-monetary_2019}. The policy stance of a central bank can be broadly described as either \textit{hawkish} (tighter policy) or \textit{dovish} (looser policy). Since the bank's current stance is typically reflected in its communications, researchers have studied the use of LLMs to automatically classify press releases, meeting minutes, and speeches as hawkish or dovish \cite{wang_aspect-based_2023}. %This has prompted researchers to study these texts with tasks like the hawkish/dovish classification, using LLMs to analyze whether a communication signals tighter or looser monetary  \cite{wang_aspect-based_2023}. 
+
+As with any use of black-box models in high-stakes domains, it is necessary to provide explainability and trustworthiness of these models. However, explaining predictions of an LLM can be difficult, especially when they operate in challenging domains. Counterfactual explanations (CE) \cite{wachter_counterfactual_2018} aim to explain a classification made by a machine learning model by perturbing the original input to generate a counterfactual that yields some desired model prediction. There are many methods to generate counterfactuals for LLM classifiers, but most have been trained and evaluated on generic tasks and datasets \cite{wu_polyjuice_2021}. In addition, the methods' evaluations often rely on imprecise quantitative and qualitative metrics.
+
+In this paper, we evaluate CE generators for LLMs on a task from the financial domain. We contribute to the field by: 1. Evaluating several categories of CE generators by comparing them from a quantitative and qualitative perspective, considering opinions from domain experts. 2. Showing that the state-of-the-art text counterfactual generators perform poorly on texts from specialist domains. 3. Highlighting the need for human evaluation and improving the qualitative text CE evaluation metrics by providing more precise definitions.
+
+\section{Related Work}
+
+With the abundance of text CE techniques proposed in the literature, we consider a wide array of methods for generating text counterfactuals. We split the text CE generators into three categories based on how they produce counterfactual explanations.
+
+The first category of generators, which we call \textit{LLM-assisted generation}, contains generators that use another LLM as a surrogate model to produce counterfactuals. Polyjuice \cite{wu_polyjuice_2021}, for example, uses a GPT-2 model fine-tuned for several counterfactual generation tasks. Polyjuice is often used as a baseline generator, including in this work.
+
+The second category, \textit{latent perturbation and decoding}, uses the latent representation of the factual sentence and perturbs it to generate a counterfactual embedding. The counterfactual embedding is then decoded into text. As a representative example for this category, we investigate PPLM \cite{dathathri_plug_2019}, which uses a surrogate attribute model to optimize generation for a target class and a fluency model (ex. GPT-2) to ensure high fluency.
+
+In the third category, \textit{sequential generation}, generators first mask a part of the input text and then fill it with new tokens. In this work, we consider the RELITC generator \cite{betti_relevance-based_2023} as a representative example. RELITC uses feature attribution to generate token masks. The tokens are then filled in with a Conditional Masked Language Model (CMLM) one by one, conditioned on a target class.
+
+This three-way split allows us to include the different characteristics of text counterfactual generators encountered in the literature while keeping the evaluation in line with the scope of this work.
+
+\begin{table*}[!htb]
+    \centering
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{|l|c|c|c|c|c|c|c|c|}
+    \hline
+        Generator & Perplexity $\downarrow$ & Perpl. ratio & Edit dist. $\downarrow$ & Tree dist. $\downarrow$ & Emb. dist. $\downarrow$ & Implausib. $\downarrow$ & Faithful. $\uparrow$ & Succ. rate $\uparrow$  \\ \hline \hline
+        Polyjuice & 90.98 (172.1)           & 1.80 (4.6) & 0.31 (0.3) & 19.67 (24.0) & \textbf{20.32} (3.7) & 33.64 (4.6) & 0.18 (0.4) & 0.34 (0.5) \\ \hline
+        PPLM      & \textbf{36.97} (16.9)   & \textbf{0.78} (0.5) & 0.69 (0.5) & 36.94 (10.3) & 20.88 (3.7) & \textbf{32.18} (4.0) & 0.34 (0.6) & 0.51 (0.5) \\ \hline
+        RELITC    & 100.94 (125.2) & 1.67 (1.2) &\textbf{ 0.14} (0.1) & \textbf{10.72} (12.2) & 21.96 (3.9) & 33.30 (3.9) & \textbf{0.54} (0.6) & \textbf{0.74} (0.4) \\ \hline
+    \end{tabular}}
+    \caption{Averages and standard deviations of the quantitative metrics calculated for counterfactual explanations of texts in the test set. A perfect result for the perplexity ratio metric is thought to be $1$ \cite{bhan_tigtec_2023}.}
+    \label{tab:quantitative-results}
+\end{table*}
+
+The evaluation methods used in the literature on text CE generators are often related to the desiderata sought by the authors of the methods. Researchers often try to optimize for \textit{minimality}, aiming for minimal perturbations that yield valid explanations. The size of the perturbations is typically measured using distance metrics, such as edit distance \cite{gilo_general_2024, wu_polyjuice_2021, ross_explaining_2021, betti_relevance-based_2023, dixit_core_2022}, tree edit distance \cite{gilo_general_2024, wu_polyjuice_2021, madaan_generate_2021}, embedding distance \cite{betti_relevance-based_2023}, or semantic measures of similarity \cite{robeer_generating_2021}. Another desideratum is \textit{validity}, that is the success rate or accuracy of explanations \cite{wu_polyjuice_2021, madaan_generate_2021, ross_explaining_2021, betti_relevance-based_2023, robeer_generating_2021}. A third popular choice is the \textit{fluency} of the CE measured using model perplexity \cite{dathathri_plug_2019, madaan_counterfactual_2023, treviso_crest_2023, fern_text_2021}. Finally, numerous methods try to optimize the \textit{plausibility} of the counterfactual \cite{gilo_general_2024, madaan_generate_2021, yang_generating_2020} or its adherence to the class conditional distribution.
+
+The use of perplexity as a fluency metric has previously been criticized \cite{meister_language_2021}, and metrics like accuracy or distance lead to adversarial-looking CEs \cite{altmeyer_endogenous_2023}. Although commonly used, these metrics might be insufficient for assessing text CEs. To address this insufficiency, researchers have occasionally relied on qualitative evaluations performed by humans. 
+
+For example, human evaluators have been asked to judge the \textit{fluency} of the CEs in numerous studies \cite{dathathri_plug_2019, wu_polyjuice_2021, madaan_generate_2021, ross_explaining_2021, betti_relevance-based_2023}, frequently described as judging whether a sentence ``reads like good English''. In other works, humans have been asked to assess the \textit{fidelity} or \textit{content preservation} of explanations \cite{madaan_generate_2021, betti_relevance-based_2023, wu_mask_2019} also referred to as \textit{plausibility} and \textit{reasonability} \cite{yang_generating_2020}, to evaluate if they fall into the original topic. 
+
+These qualitative metrics are often not rigorously defined, if they are defined at all. Unclear definitions can confuse annotators, leading to incorrect annotations. We mitigate this issue by providing more precise definitions of \textit{fluency} and \textit{plausibility} to our evaluators (Appendix \ref{appendix:improved_metrics}) inspired by \citet{ma_corpus_2006} and \citet{altmeyer_faithful_2024}.
+
+\section{Experiments}\label{sec:experiments}
+
+We use a dataset composed of speeches, meeting minutes, and press conference transcripts from the Federal Open Market Committee (FOMC) \cite{shah_trillion_2023}. The texts are split into 1984 train and 494 test sentences and categorized into 3 classes: dovish, hawkish, and neutral. \citet{shah_trillion_2023} train a RoBERTa-large classifier on this dataset, which we use in our experiments. The dataset contains 49\% neutral, 26.2\% dovish, and 24.8\% hawkish in the train set, and 49.8\% neutral, 27.3\% dovish, and 22.9\% hawkish in the test set. The median text length is 28 words or 178 characters.
+
+For each text in the dataset, we assign a random counterfactual label for which a CE should be generated. We use the three generators, Polyjuice, PPLM, and RELITC, to generate CEs. For each generator, we generate several CEs, which are then classified by the classifier. To keep the experimental setting close to a possible use case scenario, we limit the number of counterfactual explanations generated per instance-generator pair to 5 CEs. As a final explanation, we select the text with the highest classification score if the class matches the assigned target class. Otherwise, a random counterfactual is chosen.
+
+
+With this experimental setup, we want to recreate a realistic scenario in which a user generates multiple CEs to explore the possible explanations for the model's classification and to possibly select the best alternative. By selecting the explanation with the highest classification score, we want to remain as faithful as possible to the classifier. While this biases (all) results towards a higher flip rate, we do not see it as a limiting factor in our analysis, since we generate the same number of CEs for each generator. Furthermore, from our observations, we see that the issues observed by the human evaluators appeared throughout the generated CEs, even those that did not flip the label. 
+
+We perform three experiments using the FOMC dataset. In the first experiment, we use quantitative metrics for evaluation. We select the following metrics: perplexity, perplexity ratio, edit distance, semantic tree edit distance, embedding distance, implausibility, and faithfulness. The metrics are described in Appendix \ref{appendix:metrics-implementation}. 
+
+The second and third experiments involve human evaluations. For the first round of evaluations, we have recruited native English speakers via the Prolific platform. In this round, we ask the evaluators to judge the fluency of the generated sentences on a scale ranging from 1 (poor) to 5 (good). This experiment allows us to perform a large-scale evaluation of 100 factual sentences, with each sentence receiving 5 evaluations, yielding 1,500 non-expert human evaluations in total across all three generators.
+
+In the second round of human evaluations, we ask central bank employees to evaluate a subset of the CEs from the first round of evaluations for fluency and plausibility. 
+With this expert evaluation, we aim to understand the properties of CEs sought after by experts, as well as the overall quality of these explanations in financial text classification.
+
+We provide additional information about the survey 
+in Appendix \ref{appendix:additional_survey_information} and release the code and data used in our experiments\footnote{\href{https://github.com/drobiu/Text-CE-Evaluation}{github.com/drobiu/Text-CE-Evaluation}}.
+% Appendix \ref{appendix:additional_survey_information} contains additional information about the survey.
+
+\section{Results and Discussion}
+
+We present the results of the quantitative metrics in Table \ref{tab:quantitative-results}. The results do not point to a method that performs best out of the three, although specific patterns emerge.\footnote{Results are computed for all counterfactuals, including ones that do not succeed at flipping the label. We find no major differences when using only successful CEs (Table \ref{tab:success-only}).} PPLM, which uses a GPT-2 model in its generation phase and optimizes for its fluency, performs best for perplexity-based metrics.\footnote{The perplexity metric is highly dependent on the training data of the LLM used to compute it \cite{meister_language_2021}. Investigating whether the choice of models affects our results, we find no major differences between them (Table \ref{appendix:perplexity-models}).} Similarly, RELITC, which tries to minimize the fraction of perturbed tokens, has the best results for the edit distance, flip rate, and faithfulness metrics. Polyjuice achieves the best results solely for the embedding distance metric.
+
+Although quantitative metrics capture characteristics of different CE generators, we are interested in understanding how emerging patterns relate to human evaluations presented in Table \ref{tab:qualitative-results}. 
+
+\begin{table}[!b]
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}{l|cccc|}
+\cline{2-5}
+\multicolumn{1}{c|}{}           & \multicolumn{4}{c|}{Annotators}                                                                    \\ \cline{2-5} 
+                                & \multicolumn{1}{c|}{Non-exp.} & \multicolumn{1}{c|}{N-e. 5 CE} & \multicolumn{2}{c|}{Expert}                                      \\ \cline{2-5} \noalign{\vskip\doublerulesep\vskip-\arrayrulewidth} \hline
+\multicolumn{1}{|l|}{Generator} & \multicolumn{1}{c|}{Fluency}    & \multicolumn{1}{c|}{Fluency} & \multicolumn{1}{c|}{Fluency} & Plausibility \\ \hline
+\multicolumn{1}{|l|}{PPLM}      & \multicolumn{1}{c|}{2.86 (0.7)} & \multicolumn{1}{c|}{2.48 (0.5)}          & \multicolumn{1}{c|}{2.26 (0.5)}       & 1.83 (0.3)            \\ \hline
+\multicolumn{1}{|l|}{Polyjuice} & \multicolumn{1}{c|}{3.40 (0.9)} & \multicolumn{1}{c|}{3.44 (0.7)}          & \multicolumn{1}{c|}{3.45 (0.9)}       & \textbf{2.45} (0.7)            \\ \hline
+\multicolumn{1}{|l|}{RELITC}    & \multicolumn{1}{c|}{\textbf{3.43} (0.8)} & \multicolumn{1}{c|}{\textbf{3.96} (0.5)}          & \multicolumn{1}{c|}{\textbf{3.90} (0.6)}       & 2.12 (0.3)            \\ \hline
+\end{tabular}}
+\caption{Results of the human annotation of the counterfactuals using the qualitative metrics. Each counterfactual receives five ratings, which we average. We display the averages of those averages and their standard deviations. Since the expert evaluations are performed on a subset of five samples, we show the fluency scores the non-experts give on the same set of samples.}
+\label{tab:qualitative-results}
+\end{table}
+
+Regarding fluency, experts' and non-experts' gradings are broadly aligned. The highest difference between the average grades in Table \ref{tab:qualitative-results} (columns 2 and 3) is $0.22$ for PPLM, while Polyjuice's fluency scores differ only by $0.01$. This indicates that the fluency metric might not depend on the annotator's background and that non-experts' ratings can give reliable results even in specialist domains. 
+
+\begin{table*}[!ht]
+    \centering
+    \resizebox{.85\textwidth}{!}{
+    \begin{tabular}{l|c|c|c|c|c|c|}
+    \cline{2-7}
+    \multicolumn{1}{c|}{}         & Perplexity       & Perp. ratio & Edit Dist.              & Tree edit dist.         & Emb. dist. & Implausib.     \\ \hline
+    \multicolumn{1}{|l|}{Fluency (non exp.)} & -0.06 (0.2) & -0.03 (0.5) & \textbf{-0.21 (0.0002)} & \textbf{-0.21 (0.0003)} & 0.03 (0.7) & 0.06 (0.3) \\ \hline
+    \multicolumn{1}{|l|}{Fluency (exp.)}      & 0.12 (0.6) & 0.14 (0.6)  & \textbf{-0.56 (0.016)} & \textbf{-0.56 (0.015)} & -0.25 (0.3) & 0.13 (0.3) \\ \hline
+    \multicolumn{1}{|l|}{Plausibility} & 0.32 (0.2) & 0.02 (0.9)  & -0.12 (0.6)            & -0.28 (0.3)            & -0.12 (0.6) & 0.28 (0.3) \\ \hline
+    \end{tabular}}
+    \caption{Pearson correlation coefficients and $p$-values between the quantitative and qualitative metric results.}
+    \label{tab:pearson-non-expert}
+\end{table*}
+
+With the exception of distance-based metrics, quantitative metrics do not align with human evaluations for fluency. For example, even though the RELITC generator receives some of the worst results for the perplexity metrics, it produces the most fluent texts according to both groups of evaluators, while the opposite applies to PPLM.
+
+Concerning plausibility, we find that counterfactuals receive less than sufficient expert ratings. Despite RELITC producing the most fluent counterfactuals, experts assign the highest plausibility scores to Polyjuice. This stems from the RELITC's misuse of domain-specific words, as reported in the experts' comments analyzed in Section \ref{sec:expert-comments}.
+
+Even though the expert and non-expert fluency scores are nearly the same and dictate the same hierarchy as the distance metrics, there is little apparent correlation between the qualitative and quantitative results. 
+\footnote{We used the Pearson correlation coefficient to measure the dependence between metrics.} Table \ref{tab:pearson-non-expert} shows no strong correlation between plausibility and quantitative metrics. The correlation of fluency with both edit distance metrics shows low p-values, suggesting a significant (negative) correlation. This result is in line with our earlier findings, which suggest that methods that introduce fewer edits tend to be rated higher. We note that this result is different from the findings of previous work \cite{nguyen_ceval_2024}, which we attribute to the fact that we are investigating a specific domain. In more generic domains, a wider range of simple changes might still pass as plausible.
+
+In summary, our findings indicate that many existing quantitative metrics are not reliable indicators for evaluating text counterfactual explanations. 
+
+\subsection{Expert Insights on Counterfactuals}\label{sec:expert-comments}
+
+As part of our expert evaluation questionnaire, we ask our respondents to elaborate on the shortcomings in ``\textit{the semantics of the \text{[counterfactual]} sentence, its structure, or content}''.
+
+More than half of the comments regarding Polyjuice CEs relate to the lack of relevance of the introduced changes. Some comments address grammatical errors or an ``\textit{... entirely different subject}'' that replaces the original in the Polyjuice CEs.
+
+PPLM introduced errors in the sentences, too; however, unlike Polyjuice, PPLM's propensity to use domain-specific words introduces more room for errors in the usage thereof. The main critique of PPLM is unfinished CEs. PPLM generates tokens until reaching a fixed limit, making it possible that the generator does not finish a sentence. PPLM was also criticized for making the CEs conversational.
+
+RELITC is similar to PPLM in that it learns the domain-specific terms through its CMLM and then uses them to generate a counterfactual, again introducing room for error. Experts comment on sentences where RELITC introduces domain-specific terms that are factually incorrect, contradict the contents of the sentence, or make the tone of the counterfactual unclear or conversational.
+
+\subsection{Faithfulness and Plausibility Trade-off}
+
+In our analysis, we take into account the trade-off in choosing faithfulness or plausibility as a main desideratum of a CE generator. We construct a simple counterfactual generator inspired by retrieve-and-generate (RAG) approaches \cite{dixit_core_2022} using the \texttt{GPT-4o} model. The prompt of our \textit{pseudo-RAG} generator includes a few samples from the factual and target classes and the sample to generate a CE for (Appendix \ref{appendix:pseudo-rag}). We rerun our quantitative metrics experiment, including this generator. This method achieves the best success rate and produces seemingly plausible CEs; however, it performs worse than RELITC for the edit distance metrics. A plausible but unfaithful generator can be useful as a tool to generate high-quality text that changes the prediction of a model, although it does not contribute to gaining knowledge about the classifier \cite{agarwal_faithfulness_2024, altmeyer_faithful_2024}. An explanation with low plausibility and high faithfulness might not be realistic enough, especially in specialist domains. Thus, a balance between the two desiderata must be achieved \cite{lu_does_2024}. In CEs for LLMs, this is not trivial -- numerous approaches strive to increase the plausibility of their explanations and try to flip the label by producing a large number of CEs. Approaches like RELITC or PPLM take the important step towards faithfulness and introduce a link to the classifier in the process of generating a CE. 
+
+\section{Conclusions}
+
+In this work, we evaluate a range of text CE generators on a financial dataset. We consider desiderata employed by the authors of the CE generators and aim to answer what qualities of these generators are the most sought after when applied to the financial domain. Secondly, we analyze a range of evaluation metrics used in the field and highlight their possible shortcomings.
+
+We conduct three experiments, one with quantitative metrics and two with qualitative metrics, involving human evaluators. Our findings suggest that methods that apply minimal changes create counterfactuals that are more fluent than those that focus solely on CE validity. However, the plausibility of these explanations is often low. With additional comments from domain experts, we find that an incorrect use of domain-specific terms can diminish the plausibility of the explanations. Surprisingly, using CE generators that do not use specialist words might be preferable in specialist domains, suggesting that faithfulness can be as important as plausibility. A secondary finding is that CE generators that perform well on general tasks but do not take into account the classifier or the domain-specific vocabulary might fail when applied to specialist domains. Thus, we also recommend future work to evaluate text counterfactuals on non-trivial specialist tasks.
+
+Additionally, we analyze a range of quantitative metrics used to evaluate CE generators in NLP. We highlight the limitations of these metrics and urge researchers to consider human evaluation when comparing CE generation methods. We find that most of the metrics do not quantify the generators' desiderata well and that they rarely agree with the expert ratings. Similarly to recent work on operationalizing algorithmic recourse and CEs \cite{buszydlik_grounding_2024}, we find that there is often no way around the involvement of end users in evaluating CE generators. We emphasize the need to use human annotation when evaluating text CEs and provide more precise qualitative metric definitions. 
+
+\section*{Limitations}
+
+Our work is not without limitations. We select only 3 out of the multiple text counterfactual generation methods. While we attempt to consider a wide range of techniques used in the field, it is not feasible to evaluate all existing methods. 
+
+A limiting factor in using some methods is that some require additional data besides texts and labels for training purposes. PPLM's bag-of-words (BoW) attribution model requires a curated list of words for calculating the text generation direction \cite{dathathri_plug_2019}. Similarly, the work by \citet{yang_generating_2020} uses BoW for an infilling task similar to the one used in RELITC. Our work analyzes the feasibility of using text counterfactual methods in real-life applications where additional data might not be available. At the same time, we acknowledge that studying those methods might bring further insights into the field. 
+
+PPLM is not designed as a counterfactual generator; however, it has been adapted by Madaan et al. in the Generate Your Counterfactuals (GYC) method \cite{madaan_generate_2021} as well as other following works. We motivate our use of PPLM by the fact that GYC is based very closely on the PPLM method, and because there is no publicly available implementation of the GYC method, some previous works use PPLM as a baseline \cite{longo_courge_2023, liu_multi-aspect_2024}. We also do not completely dismiss the use of this type of generators in expert domains and argue that involving the classifier in the task should be explored further. 
+
+% Quantitative metrics are proxies for the qualitative ones, like text distance to fluency. Improvements in evaluation metrics could be achieved by using divergence-based metrics such as Maximum Mean Discrepancy instead of plain distance metrics.
+
+Another limitation inherent to the FOMC dataset studied here is the lack of ground-truth counterfactuals. We considered this in designing our study since datasets acquired from real-life data usually do not contain samples with exact semantic matches in their target classes. While this consideration makes our evaluation more realistic, it does not let us evaluate the results with machine translation metrics like BLEU or include the ground-truth counterfactuals in expert evaluation. Furthermore, one cannot use some of the retrieval-based generators without factual-counterfactual pairs \cite{dixit_core_2022}. This limitation has also caused us to use a simplified measure of faithfulness \cite{zheng_f-fidelity_2024} instead of ones specifically developed for text counterfactuals \cite{atanasova_faithfulness_2023}.
+
+Another limitation stems from the use of a single dataset in our evaluations. While we solely consider financial text classification, the texts in this field use specific terms that might or might not be present in the pre-training data for the foundational models used in the methods we evaluate. Furthermore, one could gain more insight from performing similar evaluations on texts from other specialist domains, such as medicine or legal texts. By developing a more generalized benchmark, the applicability of counterfactual methods on specialist domains in general can be evaluated. The findings gathered from our work and a general analysis of CEs in specialist domains, can be leveraged to design a counterfactual generator better suited for this domain type.
+
+
+\section*{Acknowledgments}
+The authors would like to thank the many central bank employees, including staff from the Federal Reserve Board of Governors, who devoted time to analyzing text counterfactuals in our experiments. The research responses, analysis, and conclusions set forth are those of the authors and do not indicate concurrence by other members of the research staff or the Federal Reserve Board of Governors. Some of the members of TU Delft were partially funded by ICAI AI for Fintech Research, an ING — TU Delft collaboration.
+
+\bibliography{custom}
+
+\appendix
+
+\section{Quantitative Metrics}\label{appendix:metrics-implementation}
+
+\textbf{Perplexity}, the exponent of the entropy of a distribution, is a measure of uncertainty. It was initially introduced to the field of language modeling by \citet{jelinek_perplexitymeasure_1977} as a general measure of the complexity of a language model. It has since been widely used as a main evaluation metric in comparing models' performance for the next token prediction task \cite{liu_roberta_2019, meister_language_2021}. 
+
+For a language model $f$ with a task of predicting the next token $x_i$ for a sequence of tokens $X = x_1, ..., x_{i-1}$, the calculation of the perplexity metric assumes an approximation of the word error rate as the log-likelihood of the $i$th token conditioned on the previous tokens: $p_f(x_i \text{ is correct}) \approx \eta_1 \log p_f(x_i|x_{<i}) + \eta_2$ for some constants $\eta_1$ and $\eta_2$ \cite{chen_evaluation_2008}.
+
+We use the HuggingFace \texttt{evaluate} \cite{von_werra_evaluate_2022} Python implementation of perplexity to evaluate counterfactual sentences. The package uses the following definition of perplexity:
+
+\begin{equation*}
+    PPL(X) = \exp \{ - \frac{1}{n} \sum^n_i \log p_f(x_i|x_{<i}) \}
+\end{equation*}
+
+which for each token $x_i$ in an input sequence of tokens $X = x_1, ..., x_n$ sums its negative log-likelihood conditioned on preceding tokens $x_{<i}$ before the exponentiation. The model used in the calculation of the log-likelihood is a \texttt{GPT-2-large} \cite{radford_language_2019}.
+
+It is worth noting that perplexity is a metric for evaluating and comparing the fluency of language models. In text counterfactual generation, this metric is often used to represent the fluency of the counterfactual dataset itself, keeping model $M$ the same while comparing different methods of generating counterfactuals. By doing so, the perplexity score obtained from this comparison relates to how likely it is for a model to have encountered a text like the one evaluated in its training.
+
+\textbf{Perplexity ratio} is the ratio between the perplexity score of the factual and its counterfactual \cite{bhan_tigtec_2023}. For each counterfactual method, we compute the mean of the perplexity ratios of its factual-counterfactual pairs. While the results of this metric might be closely dependent on the results of the perplexity metric, we expect that calculating the ratio for each factual-counterfactual pair can make the result less dependent on the absolute perplexity values.
+
+Levenshtein distance \cite{levenshtein_binary_1965}, also known as \textbf{edit distance}, is a string similarity metric. For two strings, a starting string $a$ and target string $b$, the Levenshtein distance consists of the sum of additions, deletions, and modifications needed to transform $a$ to $b$. Initially introduced as a means of error correction in the field of coding theory, the metric has been adapted to many applications \cite{haldar_levenshtein_2011} and has been used in previous works on LLM evaluation \cite{buszydlik_red_2023}. We use a space-efficient implementation of the Levenshtein distance by \citet{haldar_levenshtein_2011}.
+
+Syntactic \textbf{tree distance} is a metric for calculating the similarity between two trees representing sentences by counting the minimum number of node operations needed to transform a tree $a$ to a tree $b$. 
+
+To calculate a distance between two trees, we use a tree distance algorithm called the Zhang-Shasha algorithm \cite{zhang_simple_1989}, which, similarly to the Levenshtein distance, allows for node insertions, deletions, and modifications. In our evaluations, we use an implementation from the Python package \texttt{zss} \cite{henderson_zhang-shasha_nodate}.
+
+While similar to the string edit distance, we expect tree edit distance to be more relevant to the task of counterfactual text generation. The string edit distance metric can be more sensitive to changes in individual words. However, in cases where the counterfactual generator masks and replaces whole words, the string edit distance can give different results depending on the length of the new token. 
+
+\textbf{Embedding distance} is the distance between two points in the high-dimensional representation space of a machine learning model. We choose the embeddings of the last layer of the \texttt{roberta-large} classifier as the representations of the evaluated sentences. For each counterfactual pair, we compute the Euclidean distance between the embeddings of the sentences. 
+
+Using the sentence embeddings, we also calculate the \textbf{implausibility} metric as defined by \citet{altmeyer_faithful_2024}. Here, we calculate the mean distance between an embedding counterfactual explanation and a sample of embeddings of target class sentences.
+
+\textbf{Success rate} or flip rate is the fraction of the counterfactuals classified to their target class by the classifier. For a model $f(\cdot)$ outputting a classification $y_n$ for a sample $x_n$ and a target class $y'_n$, the metric is calculated as follows:
+
+\begin{equation*}
+    \sum^n_i \frac{[ f(x_i) = y'_i ]}{n}
+\end{equation*}
+
+Where $n$ is the total number of samples in $x$. The Iverson bracket, $[ \cdot ]$, returns $1$ if the condition in the bracket is true and $0$ otherwise. 
+
+\section{Improved Qualitative Metrics}\label{appendix:improved_metrics}
+
+We provide two qualitative metric definitions: fluency and plausibility. To establish them, we adapt existing metric definitions. 
+
+In designing a task for human evaluators, it is necessary to consider how they interpret the task's prompts. Especially in a field like text interpretation, non-experts can understand a value like fluency in many different ways. Not providing a definition or using a very broad one may lead to annotators essentially evaluating different qualities. It is thus crucial to establish a robust and detailed definition upfront.
+
+The qualitative metric of fluency can be traced back to early works on machine translation that tried to unify what constitutes fluency in a machine-generated text. \citet{white_arpa_1994} describe fluency measurement as determining whether a piece of text ``reads like good English'', disregarding the semantic correctness of the sentence and giving it a rating on a $n$-point scale. At the same time, longer and more defined definitions exist, such as ``A fluent segment is one that is grammatically well formed; contains correct spellings; adheres to the common use of terms, titles and names; is intuitively acceptable; and can be sensibly interpreted by a native speaker of English.'' by \citet{ma_corpus_2006}.  
+
+Many of the recent works on text CEs \cite{dathathri_plug_2019, wu_polyjuice_2021, madaan_generate_2021, ross_explaining_2021, betti_relevance-based_2023} evaluate their texts using a very similar notion of fluency as that defined by \citet{white_arpa_1994}. However, the notion of fluency has been described vaguely or inconsistently. Other works use different names like \textit{naturalness} \cite{robeer_generating_2021, treviso_crest_2023} to measure essentially the same thing. 
+
+We derive a fluency definition by modifying one by \citet{ma_corpus_2006}. The generators we use can produce texts where word capitalization is omitted or where the text changes abruptly. This impacts the quality of the generated text. To omit ambiguity in case a counterfactual contains these errors, we specify that they will also impact fluency. Our final definition is as follows: 
+
+\begin{quote}
+    A fluent segment is one that is grammatically well-formed; contains correct spellings; adheres to the common use of terms, titles and names; contains properly capitalized letters; and is intuitively acceptable. Unfinished sentences also impact the fluency of a segment.
+\end{quote}
+
+The definition of plausibility outside of counterfactual explanations for language models often refers to the explanation's similarity or closeness to the original data distribution \cite{kenny_generating_2021}. Indeed, many approaches to generating counterfactual explanations that emphasize the interpretability \cite{van_looveren_interpretable_2021} or the robustness \cite{artelt_evaluating_2021} of the explanations employ strategies that enhance the adherence of the counterfactual to a certain class. 
+
+\citet{altmeyer_faithful_2024} define plausibility as:
+
+\begin{quote}
+    Let $\mathcal{X}|y^+ = p(x|y^+)$ denote the true conditional distribution of samples in the target class $y^+$. Then for $x'$ to be considered a plausible counterfactual, we need: $x' \sim \mathbf{X} |y^+$.
+\end{quote}
+
+
+Some related works that evaluate counterfactual explanations for language models seemingly forgo the definition of the plausibility metric entirely \cite{madaan_generate_2021}, or ask the annotators ``\textit{how plausible (mainly in terms of grammar and comprehension)}'' \cite{yang_generating_2020}, missing the definition of the metric. \citet{gilo_general_2024} who generate counterfactuals for a movie review dataset, ask annotators to grade whether the CE is a movie review or not. While this definition considers the original data distribution, it does not include the adherence of the counterfactual to the target class.
+
+We adapt the definition by \citet{altmeyer_faithful_2024} to the text domain: 
+
+\begin{quote}
+    A plausible counterfactual segment adheres well to samples seen in the real data distribution, and the target sentiment of the target class. The changes made to the factual, considering the meaning and context of the edited words, should also fit the target domain.
+\end{quote}
+
+\section{Additional Survey Information}\label{appendix:additional_survey_information}
+
+\subsection{Participant Recruitment}
+
+We recruited the participants of our survey through the crowdsourcing platform Prolific. We recruit native English speakers from the UK and USA who have at least high-school level education. The participants were compensated with the standard for
+Prolific rate of 9 GBP per hour.
+
+\subsection{Informed Consent Form}\label{appendix:consent_form}
+
+You are being invited to participate in a [...] research study titled Evaluating Language Model Explanations in Specialist Fields. This study is being done by [the authors] from the [organization].
+
+The purpose of this research study is to assess the usability of modern language model explainability tools in generating texts in specialist fields, such as finance. This study will take you approximately 15 minutes to complete. The data will be used for evaluating a counterfactual explanation method. We will be asking you to rate pieces of text on a number of criteria using a 1 to 5 scale, and describe your reasoning in open questions.
+
+As with any online activity the risk of a breach is always possible. To the best of our ability your answers in this study will remain confidential. We will minimize any risks by only collecting your personal information for the purpose of verification of the identity of the respondents. In our research we will pseudonymize your identity and solely use the answers to the questions relating to text assessment. The survey data will be stored on a [...] drive at [the organization] and all personal information will be destroyed after the end of the thesis project.
+
+Your participation in this study is entirely voluntary and you can withdraw at any time. You are free to omit any questions.  
+
+Contact details for the corresponding researcher: [the details]
+
+By submitting a response to this survey you agree to this Opening Statement and to your response being used for the research described above, and for your de-identified answers to be included in the final data set that will be publicly available when the research is published. I understand that once my response has been submitted my data will have been processed in such a way that it is no longer possible for it to be withdrawn.
+
+\subsection{Survey Topic Introduction}\label{appendix:topic_introduction}
+
+\textbf{Counterfactual Explanations} are a form of explainable AI aiming to explain a classification made by a Machine Learning model by proposing an alternative to the original input. Imagine you write a text that you intend to be perceived as positive, but a sentiment analysis Language Model doesn't find it quite convincing. Through a counterfactual explanation, we can generate a text which could better reflect the intended tone.
+
+Your task:
+
+We will present you with several counterfactual sentences generated via different means. On each page, we will show you an original (factual) sentence and three variants of counterfactuals. We will ask you to \textbf{grade the sentences} you see using the following criteria:
+
+\textbf{Fluency}: A fluent segment is one that is grammatically well-formed; contains correct spellings; adheres to the common use of terms, titles and names; contains properly capitalized letters; and is intuitively acceptable. Unfinished sentences also impact the fluency of a segment.
+
+Please rate the texts using this definition of fluency. A text should receive a score of:
+\begin{itemize}
+    \item 5/5 if it follows this definition completely.
+    \item 3/5 if there are several mistakes but the text still is interpretable.
+    \item 1/5 if it is not fluent or grammatically correct English.
+\end{itemize}
+
+\verb|For expert evaluation only:|
+
+\textbf{Plausibility}: A plausible counterfactual segment adheres well to samples seen in the real data distribution, and the target sentiment of the target sentence class. The changes made to the factual, considering the meaning and context of the edited words, should also fit the target domain.
+
+Please rate the texts using this definition of plausibility. A text should receive a score of:
+\begin{itemize}
+    \item 5/5 if it follows this definition completely.
+    \item 3/5 if there are several mistakes but the text reflects the right sentiment.
+    \item 1/5 if the changes are nonsensical.
+\end{itemize}
+
+These criteria will also appear at the end of each page.
+
+In an \textbf{open question}, we will ask you to describe what qualities that you might look for in a text like this are missing. Your comment can refer to the semantics of the sentence, its structure, or its contents. If you do not have any comments you can also leave the answer empty.
+
+The order of the methods used for each question will be randomized.
+
+\subsection{Sample Non-Expert Question}
+
+Grade the following sentences using the Fluency criterion. You can find the grading criterion at the bottom of the page.
+
+\textbf{Sentence 1}
+
+For equities, a stock's price-earnings ratio is a standard benchmark used to measure how well a company's financials compare to its peers. for the sake of comparison, a company can be
+
+\textbf{Fluency}
+
+\begin{itemize}
+    \item Very bad (1/5)
+    \item Bad (2/5)
+    \item Sufficient (3/5)
+    \item Good (4/5)
+    \item Very good (5/5)
+\end{itemize}
+
+
+\textit{The participants were shown the definition of fluency introduced in Appendix \ref{appendix:improved_metrics}}
+
+\subsection{Sample Expert Question}
+
+Consider the following segment originally classified as \textbf{neutral}:
+
+This lack of congressional momentum could be interpreted as lack of congressional support for inflation targeting, or it could merely reflect a more neutral absence of strong opinions.
+
+Please rate the counterfactuals aiming to rewrite the segment with \textbf{dovish} as target class. You can find the grading criteria at the bottom of the page.
+
+\textbf{Neutral Factual}
+
+This lack of congressional momentum could be interpreted as lack of congressional support for inflation targeting, or it could merely reflect a more neutral absence of strong opinions.
+
+\textbf{Dovish Counterfactual 1}
+
+This lack of congressional momentum could be interpreted as lack of congressional support for the president's executive orders. as the president himself has said he will not be issuing a single executive order during his first 100
+
+
+\textbf{Fluency}
+
+\begin{itemize}
+    \item Very bad (1/5)
+    \item Bad (2/5)
+    \item Sufficient (3/5)
+    \item Good (4/5)
+    \item Very good (5/5)
+\end{itemize}
+
+
+\textbf{Plausibility}
+
+\begin{itemize}
+    \item Very bad (1/5)
+    \item Bad (2/5)
+    \item Sufficient (3/5)
+    \item Good (4/5)
+    \item Very good (5/5)
+\end{itemize}
+
+Considering the counterfactual from the previous question, describe what qualities that you might look for in a text like this are missing. Your comment can refer to the semantics of the sentence, its structure, or contents. If you do not have any comments you can also leave the answer empty.
+
+\textit{The participants were shown the definitions of fluency and plausibility introduced in Appendix \ref{appendix:improved_metrics}}
+
+\section{Scientific Artifacts and Licensing}
+
+As described in Section \ref{sec:experiments}, we use the FOMC communications dataset\footnote{\href{https://huggingface.co/datasets/gtfintechlab/fomc_communication}{huggingface.co/datasets/gtfintechlab/fomc\_communication}} by \citet{shah_trillion_2023}. The authors' original license is \texttt{cc-by-nc-4.0}, which we fully adhere to. For the purpose of our experiments, we generate a dataset with counterfactual labels and release it in the \textit{Hugging Face} platform\footnote{\href{https://huggingface.co/datasets/TextCEsInFinance/fomc-communication-counterfactual}{huggingface.co/datasets/TextCEsInFinance/fomc-communication-counterfactual}}  under the \texttt{cc-by-nc-4.0} license. We share our codebase used to generate the data and evaluate the models under the \texttt{MIT License}.
+
+\section{Alternative Models for Perplexity Calculation}
+
+\begin{table*}[!ht]
+\resizebox{\textwidth}{!}{
+\begin{tabular}{l|cc|cc|cc|}
+\cline{2-7}
+ & \multicolumn{2}{c|}{facebook/opt-125m} & \multicolumn{2}{c|}{gpt2}         & \multicolumn{2}{c|}{lxyuan/distilgpt2-finetuned-finance} \\ \cline{2-7} 
+ & \multicolumn{1}{c|}{Perplexity}    & Perpl. ratio    & \multicolumn{1}{c|}{Perplexity} & Perpl. ratio  & \multicolumn{1}{c|}{Perplexity}             & Perpl. ratio         \\ \hline
+\multicolumn{1}{|l|}{Polyjuice} &
+  \multicolumn{1}{c|}{107.06 (291.9)} &
+  1.90 (7.9) &
+  \multicolumn{1}{c|}{90.98 (172.1)} &
+  1.80 (4.6) &
+  \multicolumn{1}{c|}{104.06 (150.3)} &
+  1.62 (3.84) \\ \hline
+\multicolumn{1}{|l|}{PPLM} &
+  \multicolumn{1}{c|}{\textbf{36.07} (15.9)} &
+  \textbf{0.68} (0.4) &
+  \multicolumn{1}{c|}{\textbf{43.90} (23.5)} &
+  \textbf{0.78} (0.5) &
+  \multicolumn{1}{c|}{\textbf{43.89} (23.5)} &
+  \textbf{0.69} (0.4) \\ \hline
+\multicolumn{1}{|l|}{RELITC} &
+  \multicolumn{1}{c|}{108.86 (153.8)} &
+  1.52 (0.8) &
+  \multicolumn{1}{c|}{100.95 (125.2)} &
+  1.67 (1.2) &
+  \multicolumn{1}{c|}{111.99 (142.0)} &
+  1.52 (1.0) \\ \hline
+\end{tabular}}
+\caption{Comparison of perplexity-based metrics computed using three language models. The base GPT-2, an Open Pretrained Transformer (OPT) \cite{zhang_opt_2022} opt-125m (\url{https://huggingface.co/facebook/opt-125m}), and a GPT-2 model fine-tuned on four financial datasets (\url{https://huggingface.co/lxyuan/distilgpt2-finetuned-finance}).}
+\label{appendix:perplexity-models}
+\end{table*}
+
+
+The PPLM generator includes a GPT-2 in its fluency optimization and decoding steps. Due to the fact that we use the same model for calculating our main results in Table 
+\ref{tab:quantitative-results}, we want to test whether the choice of the model for calculating perplexity affects the resulting perplexity scores substantially. We analyze the effect an LM has on the resulting perplexities by calculating the average perplexity achieved by each of the three generators when using different models for perplexity.
+
+In this work, we evaluate three methods that differ greatly in how they generate text CEs. PPLM and Polyjuice both utilize the GPT-2, however in two very different ways. Polyjuice prompts a fine-tuned model to generate counterfactual texts, while PPLM performs sequential optimization of the text to achieve fluency. This might explain the relatively low perplexity of the PPLM CEs. The RELITC generator does not use the autoregressive LM task at all and receives the highest perplexity scores. These differences in the inner workings of the methods are likely the cause for the largely different perplexity scores. Furthermore, the differences make the methods hard to compare using the perplexity metric. 
+
+\section{Pseudo-RAG Generator}\label{appendix:pseudo-rag}
+
+The size of new LLMs, such as the GPT-4 or Mistral-7B, prevents these models from being used as part of counterfactual generators, such as the GPT-2 in the PPLM. Due to that, the quality of the contextual generators using older models might be lower compared to that possible with the use of new LLMs. The newer LLMs have been shown to perform even better than their predecessors on zero-shot tasks, so one might assume that their accuracy and their performance for a counterfactual generation task might also be good. We therefore performed an experiment using the \texttt{GPT-4o} model to create a counterfactual generator and tested it on the FOMC task.
+
+In designing our proof-of-concept method, we take inspiration from the retrieval-augmented generation (RAG) technique. In RAG, an LLM is supplied with a number of texts or documents that the user's query relates to; the model is then tasked with answering the user's query using the contents of the documents. While several CE generators use RAG or similar concepts \cite{dixit_core_2022}, they all rely on data sets that contain factual-counterfactual pairs, pairs that the FOMC dataset, among many others, lacks. This is a severe limitation because the generators can only be applied to a handful of specific datasets. In view of this limitation, we decide to supply the LLM with several examples of factual sentences from both the factual class and the target class creating a pseudo-RAG generator. We then ask the model to create a new counterfactual that could be classified to the target class by making as few changes to the original sentence as possible.
+
+\begin{figure}[!htb]
+    \begin{quote}
+        A classification Machine Learning model classifies texts into three classes: DOVISH, HAWKISH and NEUTRAL. Your task is to transform a QUERY sentence that was classified as \verb|{label}| into a COUNTERFACTUAL that should be classified as \verb|{target}|. You can replace, remove or add words, but you should keep the amount of changes to minimum, only performing up to 5 changes. You can use the EXAMPLE \texttt{\{factual label\}} and EXAMPLE \verb|{target label}| sentences as examples how sentences belonging to those classes might look like. You should generate only one COUNTERFACTUAL sentence.\\
+
+    EXAMPLE \verb|{factual label}|:\\
+    \verb|{factual class examples}|\\
+
+    EXAMPLE \verb|{target label}|:\\
+    \verb|{target class examples}|\\
+
+    \verb|{factual label}| QUERY: \verb|{factual}|\\
+
+    \verb|{target label}| COUNTERFACTUAL:\\
+    \end{quote}
+    
+    \caption{Prompt of the proof-of-concept pseudo-RAG generator.}
+\end{figure} 
+
+Table \ref{tab:rag} shows the results of the generation of text counterfactuals using our pseudo-RAG method. As in the previous experiments, we designed the experiment to use a reasonable number of generation attempts, generating five counterfactuals per factual text. Even with the small amount of counterfactuals generated, the method achieves the highest flip rate score of 0.88. Although the perplexity results for PPLM are still better than in this proof of concept, we get the second lowest perplexity out of the four generators. The results of the other metrics are comparable to the rest of the methods. A notable result is the implausibility metric, where this model receives the highest score, meaning that the embeddings of the counterfactuals generated by this model are furthest away from the factuals in our data set. A surprising result is that the pseudo-RAG method achieves the best result of the faithfulness metric, even though the method has no input from the classifier. This result can be explained by the rather high reliance of the metric on the success rate of the CEs \cite{zheng_f-fidelity_2024} which likely causes the metric to be biased. On the other hand, the quality of the generated sentences, as shown in Table \ref{tab:rag-outputs}, is seemingly the best out of all generators. This is probably due to the complexity of the model and the higher quality of the outputs compared to the other models. 
+
+Similarly to Polyjuice, pseudo-RAG has no information about the classifier. However, similarly to PPLM, it has no restrictions with regard to the amount of tokens generated, so the changes it generates are not controlled, which can cause the counterfactuals to stray away from the factual sentences. The poor results of the implausibility metric, combined with the high accuracy and seemingly high quality of the counterfactuals, lead us to believe that involving the classifier and generating counterfactuals is important, especially for classification tasks. Although this model can be useful for generating new data sets or new training sets, it is unlikely to be used to generate useful explanations for classification tasks. It is hard to evaluate the faithfulness of the explanations generated using this method; however, it is likely to see the LLM introduce its own biases rather than explain our classifier.
+
+\onecolumn
+\subsection{Pseudo-RAG Generator Results}\label{appendix:pseudo-rag-results}
+
+\begin{table*}[!htb]
+    \centering
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{|l|c|c|c|c|c|c|c|c|}
+    \hline
+        Generator & Perplexity $\downarrow$ & Perpl. ratio & Edit dist. $\downarrow$ & Tree dist. $\downarrow$ & Emb. dist. $\downarrow$ & Implausib. $\downarrow$ & Faithful. $\uparrow$ & Succ. rate $\uparrow$  \\ \hline \hline
+        Pseudo-RAG & 74.00 (38.8) & 1.37 (0.5) & 0.29 (0.1) & 19.40 (11.5) & 24.86 (4.0) & 32.39 (2.9) & \textbf{0.36} (0.5) & \textbf{0.88} \\ \hline
+        Polyjuice & 86.49 (79.9) & 1.58 (1.3)       & 0.26 (0.3)    & 17.36 (15.3)       & \textbf{24.78} (3.5)        & \textbf{31.56} (2.7) & 0.00 (0.4)    & 0.36         \\ \hline
+PPLM     & \textbf{37.11} (15.2) & \textbf{0.76 }(0.4)       & 0.56 (0.2)    & 37.48 (7.3)        & 24.97 (4.4)        & 32.09 (4.5)  & 0.04 (0.7)  & 0.52         \\ \hline
+RELITC    & 86.72 (71.6) & 1.54 (1.0)       & \textbf{0.13} (0.1)    & \textbf{11.00} (7.0)        & 25.83 (3.7)        & 32.18 (3.1)  & 0.32 (0.6)  & 0.80         \\ \hline
+    \end{tabular}}
+    \caption{Results for the quantitative metrics including the Pseudo-RAG method. Averaged over 25 factual-counterfactual rows.}
+\label{tab:rag}
+\end{table*}
+
+\subsection{Sample Pseudo-RAG Explanations}
+
+\begin{table*}[!htb]
+\centering
+    \resizebox{\textwidth}{!}{
+\begin{tabular}{|p{0.45\linewidth}|p{0.45\linewidth}|}
+\hline
+\multicolumn{1}{|c|}{Factual} & \multicolumn{1}{c|}{Counterfactual} \\ \hline
+\textbf{(Dovish)} Moreover, inflation was running at a fairly low rate and quite possibly would edge down a little further over coming quarters. & \textbf{(Neutral)} Moreover, inflation was running at a \textbf{stable} rate and \textbf{might fluctuate somewhat} over coming quarters. \\ \hline
+\textbf{(Hawkish)} In their discussion of the balance-of-risks sentence in the press statement to be issued shortly after this meeting, all the members agreed that the latter should continue to express, as it had for every meeting earlier this year, their belief that the risks remained weighted toward rising inflation. & \textbf{(Neutral)} In their discussion of the balance-of-risks sentence in the press statement to be issued shortly after this meeting, all the members agreed that the \textbf{statement} should continue to express, as it had for every meeting earlier this year, their belief that the risks \textbf{were balanced}. \\ \hline
+\textbf{(Neutral)} The uncertainty about the threshold unemployment rate also suggests a differing degree of intensity in the response of monetary policy to deviations of inflation and output to their respective targets. & \textbf{(Dovish)} The uncertainty about the threshold unemployment rate \textbf{highlights the need for stronger and more accommodating} monetary policy to \textbf{address} deviations of inflation and output \textbf{from} their respective targets. \\ \hline
+\end{tabular}}
+\caption{Sample outputs of the pseudo-RAG generator. Changes introduced in the counterfactuals, except for word capitalization, are \textbf{highlighted}.}
+\label{tab:rag-outputs}
+\end{table*}
+
+\section{Quantitative Results of Successful Counterfactuals}
+
+\begin{table}[!htb]
+\resizebox{\textwidth}{!}{
+\begin{tabular}{l|c|c|c|c|c|c|c|}
+\cline{2-8}
+                           & Perplexity   & Perp. ratio & Edit dist. & Tree dist. & Embedding dist. & Implausib. & Faithful. \\ \hline
+\multicolumn{1}{|l|}{Polyjuice} & 99.64 (227.0)  & 1.91 (4.6) & 0.36 (0.3) & 22.10 (21.7) & \textbf{20.35} (4.1) & \textbf{29.06} (3.4) & 0.49 (0.5) \\ \hline
+\multicolumn{1}{|l|}{PPLM} & \textbf{36.64} (16.2) & \textbf{0.77} (0.4)       & 0.76 (0.6)    & 36.25 (6.7)        & 20.69 (3.7)        & 29.56 (2.9)  & 0.63 (0.5)  \\ \hline
+\multicolumn{1}{|l|}{RELITC}    & 104.04 (130.2) & 1.68 (1.3) & \textbf{0.12} (0.1) & \textbf{9.90} (13.2)  & 21.84 (3.8) & 33.35 (3.5) & \textbf{0.71} (0.5)\\ \hline
+\end{tabular}}
+\caption{Quantitative results computer over results containing only successful counterfactuals.}
+\label{tab:success-only}
+\end{table}
+
+\onecolumn
+\label{appendix:sample-expert-comments}
+\section{Sample Expert Comments}
+
+
+\begin{table*}[!htb]
+\centering
+    \resizebox{\textwidth}{!}{
+\begin{tabular}{c|p{0.4\linewidth}|p{0.45\linewidth}|}
+\cline{2-3}
+ & Text  & Expert comments   \\ \hline
+\multicolumn{1}{|l|}{Factual}  & At the conclusion of this discussion, the Committee voted to authorize and direct the Federal Reserve Bank of New York, until it was instructed otherwise, to execute transactions in the System Account in accordance with the following domestic policy directive: The information reviewed at this meeting suggests that the expansion in economic activity is still robust. & \textbf{}  \\ \hline
+
+\multicolumn{1}{|l|}{Polyjuice} & At the conclusion of this discussion, the committee voted to authorize and direct the federal reserve bank of new york, until it was instructed otherwise, to execute transactions in the system account in accordance with the following domestic policy directive: the information \textbf{was not} suggests that the expansion in economic activity is still robust.                  & \textbf{1:} ``Language is off. The negation at the end makes the statement unclear.'', \textbf{2:} ``Again all capital letters are missing. This time, the last sentence is also incorrect"was not suggests" is clearly a mistake". This mistake makes the whole message impossible to understand.'', \textbf{3:} ``The last clause is not grammatically correct. Otherwise it does come across a bit more dovish.''                    \\ \hline
+\multicolumn{1}{|l|}{PPLM} & At the conclusion of this discussion, the committee voted to authorize and direct the federal reserve bank of new york, until it was instructed otherwise, to execute transactions in \textbf{securities that are not covered by the exchange act}.                                                                                                                          & \textbf{1:} ``There now is a completely different meaning at the end of the statement.'', \textbf{2:} ``Again capital letters are missing, and the second sentence is incomplete. But at least the first sentence can be understood and sounds dovish (execute transactions in additional securities)'', \textbf{3:} ``There is an incomplete sentence at the end of the excerpt. It also loses the link to the current state of the economy and so isn't more dovish''                  \\ \hline
+\multicolumn{1}{|l|}{RELITC}    & At the conclusion of this discussion, the committee voted to authorize and direct the federal reserve bank of new york, until it was instructed otherwise, to execute transactions in the system account in accordance with the following domestic policy directive : the information reviewed at this meeting suggests that the \textbf{impact of the response} is still robust.        & \textbf{1:} ``There is a change of meaning in the last sentence which makes it less clear.'', \textbf{2:} ``All capital letter are missing, but the rest of the text seems to be correct. In terms of content, it is not clear at all, in particular the sentence "the impact of the response is still robust".'', \textbf{3:} ``The vagueness of 'impact of the response' makes it difficult to extract the message or signal this would try to send.'' \\ \hline
+\end{tabular}}
+\caption{Sample counterfactuals and the expert comments regarding them. Factual label: \textit{neutral}, target label: \textit{dovish}. Changes introduced in the counterfactuals, except for word capitalization, are \textbf{highlighted}.}
+\label{tab:sample-expert-comments}
+\end{table*}
+
+\end{document}
